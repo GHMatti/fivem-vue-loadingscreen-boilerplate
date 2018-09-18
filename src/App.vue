@@ -1,17 +1,26 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <p v-for="(msg, index) in messages" v-bind:key="index">{{ msg }}</p>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-
 export default {
   name: 'app',
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      messages: [],
+    };
+  },
+  mounted() {
+    this.listener = window.addEventListener('message', (event) => {
+      const item = event.data || event.detail;
+      // to use progressbars first check for item.count then
+      // for item.idx in the next ones to get the current
+      // progress percentage
+      this.messages.push(JSON.stringify(item));
+    });
   },
 };
 </script>
@@ -23,6 +32,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
+  background-color: #ffffff;
 }
 </style>
