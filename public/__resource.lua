@@ -4,6 +4,7 @@ files {
   'index.html',
   'js/app.js',
   'js/chunk-vendors.js',
-  'img/logo.png',
   'css/app.css',
+  'css/chunk-vendors.css',
+  'img/bg.jpeg',
 }

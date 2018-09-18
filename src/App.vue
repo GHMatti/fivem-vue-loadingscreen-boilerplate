@@ -1,8 +1,13 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <p v-for="(msg, index) in messages" v-bind:key="index">{{ msg }}</p>
-  </div>
+  <v-app>
+    <div id="bg">
+      <img src="./assets/bg.jpeg" />
+    </div>
+    <div id="progress">
+      <v-progress-linear v-model="progress" v-bind:indeterminate="total === 0"></v-progress-linear>
+      <p>{{ msg }}</p>
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -10,29 +15,64 @@ export default {
   name: 'app',
   data() {
     return {
-      messages: [],
+      total: 0,
+      count: 0,
+      msg: '',
     };
+  },
+  computed: {
+    progress() {
+      return (this.count / this.total) * 100.0;
+    },
   },
   mounted() {
     this.listener = window.addEventListener('message', (event) => {
       const item = event.data || event.detail;
-      // to use progressbars first check for item.count then
-      // for item.idx in the next ones to get the current
-      // progress percentage
-      this.messages.push(JSON.stringify(item));
+      if (item.name) this.msg = item.name;
+      if (item.count) this.total += item.count;
+      if (item.idx) this.count += 1;
     });
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+::-webkit-scrollbar {
+  width: 0;
+  background: yellow;
+  display: inline !important;
+}
+
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+#progress {
+  position: fixed;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20%;
   text-align: center;
-  color: #2c3e50;
-  margin: 0;
-  background-color: #ffffff;
+  z-index: 11;
+}
+
+#bg img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
 }
 </style>

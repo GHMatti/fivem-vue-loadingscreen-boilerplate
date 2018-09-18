@@ -1,5 +1,9 @@
+import '@babel/polyfill';
 import Vue from 'vue';
+import './plugins/vuetify';
 import App from './App.vue';
+
+require('../node_modules/vuetify/dist/vuetify.min.css');
 
 Vue.config.productionTip = false;
 
